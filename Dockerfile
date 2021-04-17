@@ -1,15 +1,10 @@
-FROM python:3.10.0a7-alpine3.13
+FROM amazon/aws-cli
 
-LABEL maintainer="Ian Belcher <github.com@ianbelcher.me>"
+LABEL maintainer="Ian Belcher <github.com@ianbelcher.me>, VXST<vxst@vxst.org>"
 
-ENV PYTHONIOENCODING=UTF-8
-
-RUN apk add --no-cache curl
-
-RUN pip install awscli
-RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
-RUN chmod +x ./kubectl
-RUN mv ./kubectl /usr/local/bin/kubectl
+RUN curl -LO https://dl.k8s.io/release/v1.19.6/bin/linux/amd64/kubectl && \
+    chmod +x ./kubectl && \
+    mv ./kubectl /usr/local/bin/kubectl
 
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
